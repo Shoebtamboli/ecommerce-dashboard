@@ -1,27 +1,109 @@
-import { Box, Button, Typography } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { Box, Typography, Card, CardContent, IconButton, Stack } from '@mui/material';
+import TrendingUpIcon from '@mui/icons-material/TrendingUp';
+import TrendingDownIcon from '@mui/icons-material/TrendingDown';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import PeopleIcon from '@mui/icons-material/People';
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import InventoryIcon from '@mui/icons-material/Inventory';
+
+// Mock data for analytics
+const analyticsData = [
+  {
+    title: 'Total Sales',
+    value: '$24,590',
+    change: '+12.5%',
+    isPositive: true,
+    icon: <AttachMoneyIcon sx={{ fontSize: 40 }} />,
+    color: '#2196f3'
+  },
+  {
+    title: 'Total Orders',
+    value: '1,254',
+    change: '+8.2%',
+    isPositive: true,
+    icon: <ShoppingCartIcon sx={{ fontSize: 40 }} />,
+    color: '#4caf50'
+  },
+  {
+    title: 'New Customers',
+    value: '325',
+    change: '-2.4%',
+    isPositive: false,
+    icon: <PeopleIcon sx={{ fontSize: 40 }} />,
+    color: '#ff9800'
+  },
+  {
+    title: 'Product Stock',
+    value: '582',
+    change: '+5.7%',
+    isPositive: true,
+    icon: <InventoryIcon sx={{ fontSize: 40 }} />,
+    color: '#9c27b0'
+  }
+];
 
 const Dashboard = () => {
-  const navigate = useNavigate();
   const user = localStorage.getItem('user');
-
-  const handleLogout = () => {
-    localStorage.removeItem('isAuthenticated');
-    localStorage.removeItem('user');
-    navigate('/login');
-  };
 
   return (
     <Box sx={{ p: 3 }}>
       <Typography variant="h4" component="h1" gutterBottom>
         Dashboard
       </Typography>
-      <Typography variant="body1" gutterBottom>
+      <Typography variant="body1" gutterBottom sx={{ mb: 4 }}>
         Welcome, {user || 'User'}!
       </Typography>
-      <Button variant="contained" color="primary" onClick={handleLogout}>
-        Logout
-      </Button>
+
+      <Box sx={{ 
+        display: 'flex', 
+        flexWrap: 'wrap', 
+        gap: 3,
+        '& > *': {
+          flexGrow: 1,
+          flexBasis: {
+            xs: '100%',
+            sm: 'calc(50% - 12px)',
+            md: 'calc(25% - 18px)'
+          },
+          minWidth: 0
+        }
+      }}>
+        {analyticsData.map((item, index) => (
+          <Card key={index} sx={{ height: '100%' }}>
+            <CardContent>
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
+                <IconButton 
+                  sx={{ 
+                    backgroundColor: `${item.color}15`,
+                    '&:hover': { backgroundColor: `${item.color}25` }
+                  }}
+                >
+                  {item.icon}
+                </IconButton>
+                <Stack direction="row" alignItems="center" spacing={0.5}>
+                  {item.isPositive ? (
+                    <TrendingUpIcon sx={{ color: 'success.main' }} />
+                  ) : (
+                    <TrendingDownIcon sx={{ color: 'error.main' }} />
+                  )}
+                  <Typography 
+                    variant="body2" 
+                    sx={{ color: item.isPositive ? 'success.main' : 'error.main' }}
+                  >
+                    {item.change}
+                  </Typography>
+                </Stack>
+              </Box>
+              <Typography variant="h4" sx={{ mb: 1 }}>
+                {item.value}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                {item.title}
+              </Typography>
+            </CardContent>
+          </Card>
+        ))}
+      </Box>
     </Box>
   );
 };
