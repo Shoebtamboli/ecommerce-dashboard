@@ -13,45 +13,40 @@ const analyticsData = [
     value: '$24,590',
     change: '+12.5%',
     isPositive: true,
-    icon: <AttachMoneyIcon sx={{ fontSize: 40 }} />,
-    color: '#2196f3'
+    icon: <AttachMoneyIcon sx={{ fontSize: 40, color: theme => theme.palette.primary.main }} />,
+    color: '#B85042'  // Terracotta red
   },
   {
     title: 'Total Orders',
     value: '1,254',
     change: '+8.2%',
     isPositive: true,
-    icon: <ShoppingCartIcon sx={{ fontSize: 40 }} />,
-    color: '#4caf50'
+    icon: <ShoppingCartIcon sx={{ fontSize: 40, color: theme => theme.palette.secondary.main }} />,
+    color: '#A7BEAE'  // Muted teal
   },
   {
     title: 'New Customers',
     value: '325',
     change: '-2.4%',
     isPositive: false,
-    icon: <PeopleIcon sx={{ fontSize: 40 }} />,
-    color: '#ff9800'
+    icon: <PeopleIcon sx={{ fontSize: 40, color: theme => theme.palette.primary.main }} />,
+    color: '#B85042'  // Terracotta red
   },
   {
     title: 'Product Stock',
     value: '582',
     change: '+5.7%',
     isPositive: true,
-    icon: <InventoryIcon sx={{ fontSize: 40 }} />,
-    color: '#9c27b0'
+    icon: <InventoryIcon sx={{ fontSize: 40, color: theme => theme.palette.secondary.main }} />,
+    color: '#A7BEAE'  // Muted teal
   }
 ];
 
 const Dashboard = () => {
-  const user = localStorage.getItem('user');
-
   return (
-    <Box sx={{ p: 3 }}>
-      <Typography variant="h4" component="h1" gutterBottom>
+    <Box sx={{ p: 3, backgroundColor: 'tertiary.light' }}>
+      <Typography variant="h4" component="h1" gutterBottom color="primary.main">
         Dashboard
-      </Typography>
-      <Typography variant="body1" gutterBottom sx={{ mb: 4 }}>
-        Welcome, {user || 'User'}!
       </Typography>
 
       <Box sx={{ 
@@ -69,7 +64,17 @@ const Dashboard = () => {
         }
       }}>
         {analyticsData.map((item, index) => (
-          <Card key={index} sx={{ height: '100%' }}>
+          <Card key={index} sx={{ 
+            height: '100%',
+            boxShadow: 2,
+            '&:hover': {
+              boxShadow: 4,
+              transform: 'translateY(-2px)',
+              transition: theme => theme.transitions.create('transform', {
+                duration: theme.transitions.duration.shortest,
+              }),
+            },
+          }}>
             <CardContent>
               <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
                 <IconButton 
@@ -94,10 +99,10 @@ const Dashboard = () => {
                   </Typography>
                 </Stack>
               </Box>
-              <Typography variant="h4" sx={{ mb: 1 }}>
+              <Typography variant="h4" sx={{ mb: 1, color: 'text.primary' }}>
                 {item.value}
               </Typography>
-              <Typography variant="body2" color="text.secondary">
+              <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                 {item.title}
               </Typography>
             </CardContent>

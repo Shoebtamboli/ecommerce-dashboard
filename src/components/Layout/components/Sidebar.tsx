@@ -19,20 +19,20 @@ const menuItems = [
   { text: 'Settings', icon: <SettingsIcon />, path: '/settings' },
 ];
 
-const StyledListItemIcon = styled(ListItemIcon)({
-  color: 'white',
+const StyledListItemIcon = styled(ListItemIcon)(({ theme }) => ({
+  color: theme.palette.secondary.contrastText,
   minWidth: 40,
-});
+}));
 
 const StyledListItemButton = styled(ListItemButton)(({ theme }) => ({
   '&.Mui-selected': {
-    backgroundColor: 'rgba(255, 255, 255, 0.12)',
+    backgroundColor: 'rgba(0, 0, 0, 0.08)',
     '&:hover': {
-      backgroundColor: 'rgba(255, 255, 255, 0.16)',
+      backgroundColor: 'rgba(0, 0, 0, 0.12)',
     },
   },
   '&:hover': {
-    backgroundColor: 'rgba(255, 255, 255, 0.08)',
+    backgroundColor: 'rgba(0, 0, 0, 0.04)',
   },
 }));
 

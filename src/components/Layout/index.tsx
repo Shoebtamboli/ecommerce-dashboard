@@ -41,6 +41,7 @@ interface AppBarProps extends MuiAppBarProps {
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== 'open',
 })<AppBarProps>(({ theme, open }) => ({
+  backgroundColor: theme.palette.primary.main,
   transition: theme.transitions.create(['margin', 'width'], {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
@@ -97,8 +98,8 @@ const Layout = () => {
           '& .MuiDrawer-paper': {
             width: drawerWidth,
             boxSizing: 'border-box',
-            backgroundColor: '#1a237e', // Dark blue color
-            color: 'white',
+            backgroundColor: theme => theme.palette.secondary.main,
+            color: theme => theme.palette.secondary.contrastText,
           },
         }}
         variant="persistent"
@@ -106,14 +107,14 @@ const Layout = () => {
         open={open}
       >
         <DrawerHeader>
-          <Typography variant="h6" sx={{ flexGrow: 1, ml: 2 }}>
+          <Typography variant="h6" sx={{ flexGrow: 1, ml: 2, color: 'inherit' }}>
             Dashboard
           </Typography>
-          <IconButton onClick={handleDrawerClose} sx={{ color: 'white' }}>
+          <IconButton onClick={handleDrawerClose} sx={{ color: 'inherit' }}>
             <ChevronLeftIcon />
           </IconButton>
         </DrawerHeader>
-        <Divider sx={{ backgroundColor: 'rgba(255, 255, 255, 0.12)' }} />
+        <Divider sx={{ backgroundColor: 'rgba(0, 0, 0, 0.12)' }} />
         <Sidebar />
       </MuiDrawer>
       <Main open={open}>
