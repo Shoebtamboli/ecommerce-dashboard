@@ -5,6 +5,8 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import PeopleIcon from '@mui/icons-material/People';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import InventoryIcon from '@mui/icons-material/Inventory';
+import ReactECharts from 'echarts-for-react';
+import { DataGrid, GridColDef } from '@mui/x-data-grid';
 
 // Mock data for analytics
 const analyticsData = [
@@ -41,6 +43,86 @@ const analyticsData = [
     color: '#C4DFE6'  // Seafoam green
   }
 ];
+
+// Mock data for income overview
+const incomeData = {
+  months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+  income: [4200, 5800, 6100, 5400, 7800, 8600, 7400, 9200, 8900, 9600, 8400, 9100],
+};
+
+// Mock data for recent orders
+const recentOrders = [
+  { id: 1, orderNo: '#ORD-001', productName: 'Wireless Headphones', quantity: 2, status: 'Delivered', totalAmount: 199.99 },
+  { id: 2, orderNo: '#ORD-002', productName: 'Smart Watch', quantity: 1, status: 'Processing', totalAmount: 299.99 },
+  { id: 3, orderNo: '#ORD-003', productName: 'Laptop Stand', quantity: 3, status: 'Pending', totalAmount: 89.97 },
+  { id: 4, orderNo: '#ORD-004', productName: 'Mechanical Keyboard', quantity: 1, status: 'Delivered', totalAmount: 159.99 },
+  { id: 5, orderNo: '#ORD-005', productName: 'USB-C Hub', quantity: 2, status: 'Processing', totalAmount: 79.98 },
+];
+
+const columns: GridColDef[] = [
+  { field: 'orderNo', headerName: 'Order No', width: 130 },
+  { field: 'productName', headerName: 'Product Name', width: 200 },
+  { field: 'quantity', headerName: 'Quantity', width: 100 },
+  { 
+    field: 'status', 
+    headerName: 'Status', 
+    width: 120,
+    renderCell: (params) => (
+      <Typography
+        sx={{
+          color: params.value === 'Delivered' ? 'success.main' :
+                params.value === 'Processing' ? 'info.main' : 'warning.main',
+          fontWeight: 'medium'
+        }}
+      >
+        {params.value}
+      </Typography>
+    )
+  },
+  { 
+    field: 'totalAmount', 
+    headerName: 'Total Amount', 
+    width: 130,
+    renderCell: (params) => `$${params.value}`
+  },
+];
+
+const getIncomeChartOptions = () => ({
+  tooltip: {
+    trigger: 'axis',
+    axisPointer: {
+      type: 'shadow'
+    }
+  },
+  grid: {
+    left: '3%',
+    right: '4%',
+    bottom: '3%',
+    containLabel: true
+  },
+  xAxis: {
+    type: 'category',
+    data: incomeData.months,
+    axisTick: {
+      alignWithLabel: true
+    }
+  },
+  yAxis: {
+    type: 'value',
+    axisLabel: {
+      formatter: (value: number) => `$${value}`
+    }
+  },
+  series: [{
+    name: 'Monthly Income',
+    type: 'bar',
+    barWidth: '60%',
+    data: incomeData.income,
+    itemStyle: {
+      color: '#66A5AD'  // Using our theme's primary color
+    }
+  }]
+});
 
 const Dashboard = () => {
   return (
@@ -110,6 +192,48 @@ const Dashboard = () => {
           </Card>
         ))}
       </Box>
+
+      {/* Income Overview Chart */}
+      <Card sx={{ mt: 3 }}>
+        <CardContent>
+          <Typography variant="h6" gutterBottom color="primary.main">
+            Income Overview
+          </Typography>
+          <ReactECharts
+            option={getIncomeChartOptions()}
+            style={{ height: '400px' }}
+          />
+        </CardContent>
+      </Card>
+
+      {/* Recent Orders Table */}
+      <Card sx={{ mt: 3 }}>
+        <CardContent>
+          <Typography variant="h6" gutterBottom color="primary.main">
+            Recent Orders
+          </Typography>
+          <Box sx={{ height: 400, width: '100%' }}>
+            <DataGrid
+              rows={recentOrders}
+              columns={columns}
+              initialState={{
+                pagination: {
+                  paginationModel: {
+                    pageSize: 5,
+                  },
+                },
+              }}
+              pageSizeOptions={[5]}
+              disableRowSelectionOnClick
+              sx={{
+                '& .MuiDataGrid-columnHeaders': {
+                  backgroundColor: 'secondary.light',
+                },
+              }}
+            />
+          </Box>
+        </CardContent>
+      </Card>
     </Box>
   );
 };
