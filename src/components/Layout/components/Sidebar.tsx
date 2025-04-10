@@ -26,13 +26,13 @@ const StyledListItemIcon = styled(ListItemIcon)(({ theme }) => ({
 
 const StyledListItemButton = styled(ListItemButton)(({ theme }) => ({
   '&.Mui-selected': {
-    backgroundColor: 'rgba(0, 0, 0, 0.08)',
+    backgroundColor: 'rgba(102, 165, 173, 0.12)', // Light blue with opacity
     '&:hover': {
-      backgroundColor: 'rgba(0, 0, 0, 0.12)',
+      backgroundColor: 'rgba(102, 165, 173, 0.16)',
     },
   },
   '&:hover': {
-    backgroundColor: 'rgba(0, 0, 0, 0.04)',
+    backgroundColor: 'rgba(102, 165, 173, 0.08)',
   },
 }));
 

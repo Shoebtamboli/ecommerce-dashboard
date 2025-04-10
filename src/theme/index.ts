@@ -22,26 +22,30 @@ declare module '@mui/material/styles' {
 export const theme = createTheme({
   palette: {
     primary: {
-      main: '#B85042', // Terracotta red
-      light: '#c97666',
-      dark: '#80382e',
+      main: '#66A5AD', // Light blue
+      light: '#87b8be',
+      dark: '#477379',
       contrastText: '#fff',
     },
     secondary: {
-      main: '#A7BEAE', // Muted teal
-      light: '#bccec2',
-      dark: '#748579',
-      contrastText: '#000',
+      main: '#C4DFE6', // Seafoam green
+      light: '#d6e9ee',
+      dark: '#899ca1',
+      contrastText: '#2c484d',
     },
     tertiary: {
-      main: '#E7E8D1', // Light beige
-      light: '#f4f5e6',
-      dark: '#a1a292',
-      contrastText: '#000',
+      main: '#C4DFE6',
+      light: '#d6e9ee',
+      dark: '#899ca1',
+      contrastText: '#2c484d',
     },
     background: {
-      default: '#E7E8D1', // Light beige
+      default: '#f5f9fa',
       paper: '#fff',
+    },
+    text: {
+      primary: '#2c484d',
+      secondary: '#66A5AD',
     },
   },
 });

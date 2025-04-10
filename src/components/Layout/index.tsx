@@ -10,8 +10,8 @@ import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import { Outlet } from 'react-router-dom';
-import Sidebar from './components/Sidebar';
-import Header from './components/Header';
+import Sidebar from '../Layout/components/Sidebar';
+import Header from '../Layout/components/Header';
 
 const drawerWidth = 240;
 
@@ -117,7 +117,7 @@ const Layout = () => {
         <Divider sx={{ backgroundColor: 'rgba(0, 0, 0, 0.12)' }} />
         <Sidebar />
       </MuiDrawer>
-      <Main open={open}>
+      <Main open={open} sx={{ backgroundColor: 'background.default' }}>
         <DrawerHeader />
         <Outlet />
       </Main>

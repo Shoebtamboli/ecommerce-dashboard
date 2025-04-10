@@ -14,7 +14,7 @@ const analyticsData = [
     change: '+12.5%',
     isPositive: true,
     icon: <AttachMoneyIcon sx={{ fontSize: 40, color: theme => theme.palette.primary.main }} />,
-    color: '#B85042'  // Terracotta red
+    color: '#66A5AD'  // Light blue
   },
   {
     title: 'Total Orders',
@@ -22,7 +22,7 @@ const analyticsData = [
     change: '+8.2%',
     isPositive: true,
     icon: <ShoppingCartIcon sx={{ fontSize: 40, color: theme => theme.palette.secondary.main }} />,
-    color: '#A7BEAE'  // Muted teal
+    color: '#C4DFE6'  // Seafoam green
   },
   {
     title: 'New Customers',
@@ -30,7 +30,7 @@ const analyticsData = [
     change: '-2.4%',
     isPositive: false,
     icon: <PeopleIcon sx={{ fontSize: 40, color: theme => theme.palette.primary.main }} />,
-    color: '#B85042'  // Terracotta red
+    color: '#66A5AD'  // Light blue
   },
   {
     title: 'Product Stock',
@@ -38,13 +38,13 @@ const analyticsData = [
     change: '+5.7%',
     isPositive: true,
     icon: <InventoryIcon sx={{ fontSize: 40, color: theme => theme.palette.secondary.main }} />,
-    color: '#A7BEAE'  // Muted teal
+    color: '#C4DFE6'  // Seafoam green
   }
 ];
 
 const Dashboard = () => {
   return (
-    <Box sx={{ p: 3, backgroundColor: 'tertiary.light' }}>
+    <Box sx={{ p: 3, backgroundColor: 'background.default' }}>
       <Typography variant="h4" component="h1" gutterBottom color="primary.main">
         Dashboard
       </Typography>
@@ -66,6 +66,7 @@ const Dashboard = () => {
         {analyticsData.map((item, index) => (
           <Card key={index} sx={{ 
             height: '100%',
+            backgroundColor: 'background.paper',
             boxShadow: 2,
             '&:hover': {
               boxShadow: 4,
