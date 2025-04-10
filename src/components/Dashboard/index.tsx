@@ -1,4 +1,4 @@
-import { Box, Typography, Card, CardContent, IconButton, Stack } from '@mui/material';
+import { Box, Typography, Card, CardContent, IconButton, Stack, Chip } from '@mui/material';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import TrendingDownIcon from '@mui/icons-material/TrendingDown';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
@@ -7,6 +7,7 @@ import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import InventoryIcon from '@mui/icons-material/Inventory';
 import ReactECharts from 'echarts-for-react';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import { format } from 'date-fns';
 
 // Mock data for analytics
 const analyticsData = [
@@ -56,40 +57,206 @@ const ordersData = {
   orders: [145, 178, 189, 167, 197, 214, 208, 233, 246, 255, 281, 293],
 };
 
-// Mock data for recent orders
+// Mock data for recent orders with additional fields
 const recentOrders = [
-  { id: 1, orderNo: '#ORD-001', productName: 'Wireless Headphones', quantity: 2, status: 'Delivered', totalAmount: 199.99 },
-  { id: 2, orderNo: '#ORD-002', productName: 'Smart Watch', quantity: 1, status: 'Processing', totalAmount: 299.99 },
-  { id: 3, orderNo: '#ORD-003', productName: 'Laptop Stand', quantity: 3, status: 'Pending', totalAmount: 89.97 },
-  { id: 4, orderNo: '#ORD-004', productName: 'Mechanical Keyboard', quantity: 1, status: 'Delivered', totalAmount: 159.99 },
-  { id: 5, orderNo: '#ORD-005', productName: 'USB-C Hub', quantity: 2, status: 'Processing', totalAmount: 79.98 },
+  { 
+    id: 1, 
+    orderNo: '#ORD-001', 
+    customerName: 'John Smith',
+    email: 'john.smith@email.com',
+    productName: 'Wireless Headphones', 
+    quantity: 2, 
+    status: 'Delivered',
+    paymentMethod: 'Credit Card',
+    orderDate: new Date('2025-04-09T10:30:00'),
+    totalAmount: 199.99 
+  },
+  { 
+    id: 2, 
+    orderNo: '#ORD-002', 
+    customerName: 'Emily Johnson',
+    email: 'emily.j@email.com',
+    productName: 'Smart Watch', 
+    quantity: 1, 
+    status: 'Processing',
+    paymentMethod: 'PayPal',
+    orderDate: new Date('2025-04-10T09:15:00'),
+    totalAmount: 299.99 
+  },
+  { 
+    id: 3, 
+    orderNo: '#ORD-003',
+    customerName: 'Michael Brown',
+    email: 'm.brown@email.com', 
+    productName: 'Laptop Stand', 
+    quantity: 3, 
+    status: 'Pending',
+    paymentMethod: 'Debit Card',
+    orderDate: new Date('2025-04-10T11:45:00'),
+    totalAmount: 89.97 
+  },
+  { 
+    id: 4, 
+    orderNo: '#ORD-004',
+    customerName: 'Sarah Wilson',
+    email: 's.wilson@email.com', 
+    productName: 'Mechanical Keyboard', 
+    quantity: 1, 
+    status: 'Delivered',
+    paymentMethod: 'Credit Card',
+    orderDate: new Date('2025-04-09T14:20:00'),
+    totalAmount: 159.99 
+  },
+  { 
+    id: 5, 
+    orderNo: '#ORD-005',
+    customerName: 'David Lee',
+    email: 'd.lee@email.com', 
+    productName: 'USB-C Hub', 
+    quantity: 2, 
+    status: 'Processing',
+    paymentMethod: 'PayPal',
+    orderDate: new Date('2025-04-10T08:30:00'),
+    totalAmount: 79.98 
+  },
 ];
 
+const getStatusColor = (status: string) => {
+  switch (status) {
+    case 'Delivered':
+      return {
+        color: 'success',
+        variant: 'outlined'
+      };
+    case 'Processing':
+      return {
+        color: 'info',
+        variant: 'outlined'
+      };
+    case 'Pending':
+      return {
+        color: 'warning',
+        variant: 'outlined'
+      };
+    default:
+      return {
+        color: 'default',
+        variant: 'outlined'
+      };
+  }
+};
+
 const columns: GridColDef[] = [
-  { field: 'orderNo', headerName: 'Order No', width: 130 },
-  { field: 'productName', headerName: 'Product Name', width: 200 },
-  { field: 'quantity', headerName: 'Quantity', width: 100 },
   { 
-    field: 'status', 
-    headerName: 'Status', 
+    field: 'orderNo', 
+    headerName: 'Order No', 
     width: 120,
+    headerAlign: 'center',
+    align: 'center',
     renderCell: (params) => (
-      <Typography
-        sx={{
-          color: params.value === 'Delivered' ? 'success.main' :
-                params.value === 'Processing' ? 'info.main' : 'warning.main',
-          fontWeight: 'medium'
-        }}
-      >
+      <Typography variant="body2" sx={{ fontWeight: 'medium', color: 'primary.main' }}>
         {params.value}
       </Typography>
     )
   },
   { 
+    field: 'customerName', 
+    headerName: 'Customer', 
+    width: 180,
+    headerAlign: 'center',
+    align: 'center',
+    renderCell: (params) => (
+      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <Typography variant="body2" sx={{ fontWeight: 'medium' }}>
+          {params.value}
+        </Typography>
+        <Typography variant="caption" color="text.secondary">
+          {params.row.email}
+        </Typography>
+      </Box>
+    )
+  },
+  { 
+    field: 'productName', 
+    headerName: 'Product', 
+    flex: 1,
+    minWidth: 180,
+    headerAlign: 'center',
+    align: 'center',
+    renderCell: (params) => (
+      <Typography variant="body2" sx={{ textAlign: 'center' }}>
+        {params.value}
+      </Typography>
+    )
+  },
+  { 
+    field: 'quantity', 
+    headerName: 'Qty', 
+    width: 70,
+    align: 'center',
+    headerAlign: 'center',
+    renderCell: (params) => (
+      <Typography variant="body2" sx={{ width: '100%', textAlign: 'center' }}>
+        {params.value}
+      </Typography>
+    )
+  },
+  { 
+    field: 'paymentMethod', 
+    headerName: 'Payment', 
+    width: 120,
+    align: 'center',
+    headerAlign: 'center',
+    renderCell: (params) => (
+      <Typography variant="body2">
+        {params.value}
+      </Typography>
+    )
+  },
+  {
+    field: 'orderDate',
+    headerName: 'Date',
+    width: 160,
+    align: 'center',
+    headerAlign: 'center',
+    renderCell: (params) => (
+      <Typography variant="body2">
+        {format(params.value, 'MMM dd, yyyy HH:mm')}
+      </Typography>
+    )
+  },
+  { 
+    field: 'status', 
+    headerName: 'Status', 
+    width: 120,
+    align: 'center',
+    headerAlign: 'center',
+    renderCell: (params) => {
+      const statusConfig = getStatusColor(params.value);
+      return (
+        <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+          <Chip
+            label={params.value}
+            color={statusConfig.color as any}
+            variant={statusConfig.variant as any}
+            size="small"
+            sx={{ minWidth: 85, justifyContent: 'center' }}
+          />
+        </Box>
+      );
+    }
+  },
+  { 
     field: 'totalAmount', 
-    headerName: 'Total Amount', 
-    width: 130,
-    renderCell: (params) => `$${params.value}`
+    headerName: 'Total', 
+    width: 120,
+    align: 'center',
+    headerAlign: 'center',
+    renderCell: (params) => (
+      <Typography variant="body2" sx={{ fontWeight: 'medium' }}>
+        ${params.value.toFixed(2)}
+      </Typography>
+    )
   },
 ];
 
@@ -290,7 +457,7 @@ const Dashboard = () => {
       {/* Recent Orders Table */}
       <Card sx={{ mt: 3 }}>
         <CardContent>
-          <Typography variant="h6" gutterBottom color="primary.main">
+          <Typography variant="h6" gutterBottom color="primary.main" sx={{ textAlign: 'center' }}>
             Recent Orders
           </Typography>
           <Box sx={{ height: 400, width: '100%' }}>
@@ -309,7 +476,23 @@ const Dashboard = () => {
               sx={{
                 '& .MuiDataGrid-columnHeaders': {
                   backgroundColor: 'secondary.light',
+                  borderRadius: 1,
+                  fontWeight: 'bold',
                 },
+                '& .MuiDataGrid-cell': {
+                  borderColor: 'secondary.light',
+                  py: 1.5,
+                  justifyContent: 'center'
+                },
+                '& .MuiDataGrid-row:hover': {
+                  backgroundColor: 'secondary.light'
+                },
+                '& .MuiDataGrid-row:nth-of-type(odd)': {
+                  backgroundColor: 'background.default'
+                },
+                '& .MuiChip-root': {
+                  fontWeight: 500
+                }
               }}
             />
           </Box>
