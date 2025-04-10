@@ -50,6 +50,12 @@ const incomeData = {
   income: [4200, 5800, 6100, 5400, 7800, 8600, 7400, 9200, 8900, 9600, 8400, 9100],
 };
 
+// Mock data for orders overview
+const ordersData = {
+  months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+  orders: [145, 178, 189, 167, 197, 214, 208, 233, 246, 255, 281, 293],
+};
+
 // Mock data for recent orders
 const recentOrders = [
   { id: 1, orderNo: '#ORD-001', productName: 'Wireless Headphones', quantity: 2, status: 'Delivered', totalAmount: 199.99 },
@@ -124,6 +130,59 @@ const getIncomeChartOptions = () => ({
   }]
 });
 
+const getOrdersChartOptions = () => ({
+  tooltip: {
+    trigger: 'axis',
+    axisPointer: {
+      type: 'line'
+    }
+  },
+  grid: {
+    left: '3%',
+    right: '4%',
+    bottom: '3%',
+    containLabel: true
+  },
+  xAxis: {
+    type: 'category',
+    data: ordersData.months,
+    axisTick: {
+      alignWithLabel: true
+    }
+  },
+  yAxis: {
+    type: 'value',
+    axisLabel: {
+      formatter: (value: number) => value
+    }
+  },
+  series: [{
+    name: 'Monthly Orders',
+    type: 'line',
+    smooth: true,
+    data: ordersData.orders,
+    itemStyle: {
+      color: '#66A5AD'  // Using our theme's primary color
+    },
+    areaStyle: {
+      color: {
+        type: 'linear',
+        x: 0,
+        y: 0,
+        x2: 0,
+        y2: 1,
+        colorStops: [{
+          offset: 0,
+          color: '#66A5AD33'
+        }, {
+          offset: 1,
+          color: '#66A5AD00'
+        }]
+      }
+    }
+  }]
+});
+
 const Dashboard = () => {
   return (
     <Box sx={{ p: 3, backgroundColor: 'background.default' }}>
@@ -131,6 +190,7 @@ const Dashboard = () => {
         Dashboard
       </Typography>
 
+      {/* Analytics Cards */}
       <Box sx={{ 
         display: 'flex', 
         flexWrap: 'wrap', 
@@ -193,18 +253,39 @@ const Dashboard = () => {
         ))}
       </Box>
 
-      {/* Income Overview Chart */}
-      <Card sx={{ mt: 3 }}>
-        <CardContent>
-          <Typography variant="h6" gutterBottom color="primary.main">
-            Income Overview
-          </Typography>
-          <ReactECharts
-            option={getIncomeChartOptions()}
-            style={{ height: '400px' }}
-          />
-        </CardContent>
-      </Card>
+      {/* Charts Row */}
+      <Box sx={{ 
+        display: 'flex', 
+        flexDirection: { xs: 'column', lg: 'row' },
+        gap: 3,
+        mt: 3
+      }}>
+        {/* Income Overview Chart */}
+        <Card sx={{ flex: 1, minWidth: 0 }}>
+          <CardContent>
+            <Typography variant="h6" gutterBottom color="primary.main">
+              Income Overview
+            </Typography>
+            <ReactECharts
+              option={getIncomeChartOptions()}
+              style={{ height: '400px', width: '100%' }}
+            />
+          </CardContent>
+        </Card>
+
+        {/* Orders Overview Chart */}
+        <Card sx={{ flex: 1, minWidth: 0 }}>
+          <CardContent>
+            <Typography variant="h6" gutterBottom color="primary.main">
+              Orders Overview
+            </Typography>
+            <ReactECharts
+              option={getOrdersChartOptions()}
+              style={{ height: '400px', width: '100%' }}
+            />
+          </CardContent>
+        </Card>
+      </Box>
 
       {/* Recent Orders Table */}
       <Card sx={{ mt: 3 }}>
