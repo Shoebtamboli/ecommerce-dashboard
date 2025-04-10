@@ -19,9 +19,16 @@ const HeaderBox = styled(Box)(({ theme }) => ({
   alignItems: 'center',
   width: '100%',
   justifyContent: 'space-between',
+  color: 'white'
 }));
 
 const IconsContainer = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  gap: theme.spacing(2),
+}));
+
+const TitleContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   gap: theme.spacing(2),
@@ -48,9 +55,11 @@ const Header = () => {
 
   return (
     <HeaderBox>
-      <Typography variant="h6" noWrap component="div">
-        E-Commerce Dashboard
-      </Typography>
+      <TitleContainer>
+        <Typography variant="h6" sx={{ color: 'white' }}>
+          Welcome, {user || 'User'}!
+        </Typography>
+      </TitleContainer>
       
       <IconsContainer>
         <Tooltip title="Messages">
